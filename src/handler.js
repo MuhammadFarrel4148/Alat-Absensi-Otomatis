@@ -1,7 +1,7 @@
 const db = require('./database');
 const { nanoid } = require('nanoid');
 
-const scanBarcode = async (request, response) => {
+const scanBarcode = async(request, response) => {
     const { barcode } = request.body;
 
     try {
@@ -88,4 +88,41 @@ const scanBarcode = async (request, response) => {
     }
 };
 
-module.exports = { scanBarcode };
+const statisticMahasiswa = async(request, response) => {
+    try {
+        const { day, month, year } = request.query;
+
+        let sqlQuery = `SELECT * FROM data_pengunjung WHERE 1=1`;
+        let sqlParams = [];
+
+        if(day) {
+            sqlQuery += ` AND DAY(waktu_masuk) = ?`;
+            sqlParams.push(day);
+        };
+
+        if(month) {
+            sqlQuery += ` AND MONTH(waktu_masuk) = ?`;
+            sqlParams.push(month);
+        };
+
+        if(year) {
+            sqlQuery += ` AND YEAR(waktu_masuk) = ?`;
+            sqlParams.push(year);
+        };
+
+        const [getStatistic] = await db.query(sqlQuery, sqlParams);
+
+        return response.status(200).json({
+            status: 'success',
+            result: getStatistic
+        });
+
+    } catch(error) {
+        return response.status(500).json({
+            status: 'fail',
+            message: `Invalid statistic mahasiswa: ${error}`
+        });
+    };
+};
+
+module.exports = { scanBarcode, statisticMahasiswa };
