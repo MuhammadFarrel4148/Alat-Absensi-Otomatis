@@ -1,5 +1,104 @@
+require('dotenv').config();
 const db = require('./database');
 const { nanoid } = require('nanoid');
+const jwt = require('jsonwebtoken');
+
+const generateToken = (admin) => {
+    const token = jwt.sign({ id: admin[0].id_admin, username: admin[0].username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return token;
+};
+
+const loginAccount = async(request, response) => {
+    const { username, password } = request.body;
+
+    try {
+        if(!username || !password) {
+            return response.status(400).json({
+                status: 'fail',
+                message: `Input not valid, try again`
+            });
+        };
+
+        const [existAdmin] = await db.query(`SELECT * FROM admin WHERE username = ? AND password = ?`, [username, password]);
+
+        if(existAdmin.length > 0) {
+            const token = generateToken(existAdmin);
+
+            return response.status(201).json({
+               status: 'success',
+               message: 'berhasil login',
+               token,
+               account: {
+                    username: existAdmin[0].username
+               }
+            });
+        };
+
+        return response.status(400).json({
+            status: 'fail',
+            message: 'Username or password are incorrect'
+        })
+
+    } catch(error) {
+        return response.status(500).json({
+            status: 'fail',
+            message: `Terjadi error: ${error}`
+        });
+    };
+};
+
+const logoutAccount = async(request, response) => {
+    const authorization = request.headers.authorization;
+
+    try {
+        if(!authorization) {
+            return response.status(401).json({
+                status: 'fail',
+                message: 'Unauthorized'
+            });
+        };
+
+        const token = authorization.split(' ')[1];
+        
+        const [isBlacklist] = await db.query(`SELECT * FROM blacklisttoken WHERE token = ?`, [token]);
+
+        if(isBlacklist.length > 0) {
+            return response.status(401).json({
+                status: 'fail',
+                message: 'Unauthorized'
+            });
+        };
+
+        const checkValidation = jwt.verify(token, process.env.JWT_SECRET);
+
+        if(checkValidation) {
+            const [blacklist] = await db.query(`INSERT INTO blacklisttoken(token) VALUES(?)`, [token]);
+
+            if(blacklist.affectedRows === 1) {
+                return response.status(201).json({
+                    status: 'success',
+                    message: 'logout berhasil'
+                });
+            };
+
+            return response.status(500).json({
+                status: 'fail',
+                message: 'gagal memasukkan token, coba lagi'
+            });
+        };
+
+        return response.status(401).json({
+            status: 'fail',
+            message: 'Unauthorized'
+        });
+
+    } catch(error) {
+        return response.status(500).json({
+            status: 'fail',
+            message: `Terjadi error: ${error}`
+        });
+    };
+};
 
 const scanBarcode = async(request, response) => {
     const { barcode } = request.body;
@@ -125,4 +224,4 @@ const statisticMahasiswa = async(request, response) => {
     };
 };
 
-module.exports = { scanBarcode, statisticMahasiswa };
+module.exports = { scanBarcode, statisticMahasiswa, loginAccount, logoutAccount };
