@@ -1,0 +1,147 @@
+*, html {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    margin: 0;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url(../assets/abstract-marble-texture-black-white-grey-background-handmade-technique.jpg);
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    z-index: -1;
+}
+
+.navigation {
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: #273F4F;
+}
+
+.logo-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.logo-header h1 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+}
+
+.logo-header h1 span {
+    color: #FE7743;
+}
+
+.logoub {
+    width: 50px;
+}
+
+.list-menu {
+    display: flex;
+    gap: 5rem;
+    list-style: none;
+}
+
+.list-menu li a {
+    text-decoration: none;
+    color: #273F4F;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    transition: all;
+    transition-duration: 300ms;
+}
+
+.list-menu li a:hover {
+    color: #FE7743;
+}
+
+.full-landing-page {
+    display: flex;
+    flex-direction: row;
+    color: #273F4F;
+}
+
+.landing-page-left {
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    width: 600px;
+    padding: 1rem;
+    margin-top: 5rem;
+    margin-left: 15rem;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.5rem;
+}
+
+.title-explanation {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.title-explanation .title {
+    font-weight: 700;
+    line-height: 60px;
+}
+
+.title-explanation .title span {
+    color: #FE7743;
+}
+
+.title-explanation .sub-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.scan-place {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.scan-place h3 {
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+
+.scan-place h3 span {
+    background-color: #FE7743;
+    padding: 0 1rem;
+    border-radius: 20px;
+    color: white;
+}
+
+#scanbarcode {
+    outline: none;
+    padding: 10px;
+    width: 330px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+}
+
+#scanbarcode::placeholder {
+    font-family: "Poppins", sans-serif;
+}
+
+.landing-page-right {
+    margin-top: 3rem;
+}
+
+.writtingbook {
+    width: 500px;
+}
