@@ -15,17 +15,16 @@ input.addEventListener('input', async() => {
             });
     
             const data = await response.json();
-            console.log(data);
             
             if(data.message === 'sesi dan data berhasil diperbarui' || data.message === 'sesi berhasil diperbarui, data berhasil dibuat') {
                 result.textContent = `Barcode ${barcode} berhasil discan`;
                 result.className = 'result success';
     
-            } else if(data.status === 400 && data.message === 'input not valid, try again') {
+            } else if(data.status === 'fail' && data.message === 'input not valid, try again') {
                 result.textContent = `Barcode ${barcode} tidak valid`;
                 result.className = 'result fail';
     
-            } else if(data.status === 404 && data.massage === 'nim mahasiswa tidak terdaftar, hubungi petugas') {
+            } else if(data.status === 'fail' && data.message === 'nim mahasiswa tidak terdaftar, hubungi petugas') {
                 result.textContent = `Barcode ${barcode} tidak terdaftar, hubungi petugas`;
                 result.className = 'result fail';
             }
@@ -35,19 +34,19 @@ input.addEventListener('input', async() => {
             setTimeout(() => {
                 result.textContent = '';
                 result.className = 'result';
-            }, 2000);
+            }, 3000);
 
         } catch(error) {
             result.textContent = 'Terjadi kesalahan dalam menghubungi server';
             result.className = 'result fail';
 
             input.value = '';
-            
+
             setTimeout(() => {
                 result.textContent = '';
                 result.className = 'result';
-            }, 2000);
+            }, 3000);
 
         };
-    }   
+    };   
 });

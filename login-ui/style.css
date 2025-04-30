@@ -163,7 +163,7 @@ body::before {
     font-family: "Poppins", sans-serif;
 }
 
-#submit {
+#submitButton {
     font-family: "Poppins", sans-serif;
     width: 280px;
     height: 50px;
@@ -176,7 +176,25 @@ body::before {
     transition-duration: 300ms;
 }
 
-#submit:hover {
+#submitButton:hover {
     font-weight: 600;
     background-color: #f85d20;
+}
+
+.result {
+    text-align: center;
+    width: 280px;
+    height: 50px;
+    margin-top: 1rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.fail {
+    color: red;
+}
+
+.success {
+    color: green;
 }

@@ -4,22 +4,22 @@ const { nanoid } = require('nanoid');
 const jwt = require('jsonwebtoken');
 
 const generateToken = (admin) => {
-    const token = jwt.sign({ id: admin[0].id_admin, username: admin[0].username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: admin[0].id_admin, email: admin[0].email }, process.env.JWT_SECRET, { expiresIn: '1h' });
     return token;
 };
 
 const loginAccount = async(request, response) => {
-    const { username, password } = request.body;
+    const { email, password } = request.body;
 
     try {
-        if(!username || !password) {
+        if(!email || !password) {
             return response.status(400).json({
                 status: 'fail',
                 message: `Input not valid, try again`
             });
         };
 
-        const [existAdmin] = await db.query(`SELECT * FROM admin WHERE username = ? AND password = ?`, [username, password]);
+        const [existAdmin] = await db.query(`SELECT * FROM admin WHERE email = ? AND password = ?`, [email, password]);
 
         if(existAdmin.length > 0) {
             const token = generateToken(existAdmin);
@@ -29,14 +29,14 @@ const loginAccount = async(request, response) => {
                message: 'berhasil login',
                token,
                account: {
-                    username: existAdmin[0].username
+                    email: existAdmin[0].email
                }
             });
         };
 
         return response.status(400).json({
             status: 'fail',
-            message: 'Username or password are incorrect'
+            message: 'Email or password are incorrect'
         })
 
     } catch(error) {
