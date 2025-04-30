@@ -30,8 +30,7 @@ loginForm.addEventListener('submit', async(event) => {
             result.className = 'result fail';
 
         } else if(data.status === 'success' && data.message === 'berhasil login') {
-            result.textContent = 'Berhasil login';
-            result.className  = 'result success';
+            window.location.href = 'http://127.0.0.1:3001/Alat-Absensi-Otomatis/admin-ui/admin.html'
 
         }
 
