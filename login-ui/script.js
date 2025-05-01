@@ -25,7 +25,7 @@ loginForm.addEventListener('submit', async(event) => {
             result.textContent = 'Input not valid, try again';
             result.className = 'result fail';
 
-        } else if(data.status === 'fail' && data.message === 'Username or password are incorrect') {
+        } else if(data.status === 'fail' && data.message === 'Email or password are incorrect') {
             result.textContent = 'Incorret username or password';
             result.className = 'result fail';
 

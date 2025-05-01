@@ -1,5 +1,6 @@
 const input = document.getElementById('scanbarcode');
 const result = document.getElementById('result');
+const socket = io('http://localhost:3000');
 
 input.addEventListener('input', async() => { 
     const barcode = input.value.trim();
@@ -29,9 +30,8 @@ input.addEventListener('input', async() => {
                 result.className = 'result fail';
             }
 
-            input.value = '';
-
             setTimeout(() => {
+                input.value = '';
                 result.textContent = '';
                 result.className = 'result';
             }, 3000);
@@ -40,13 +40,35 @@ input.addEventListener('input', async() => {
             result.textContent = 'Terjadi kesalahan dalam menghubungi server';
             result.className = 'result fail';
 
-            input.value = '';
-
             setTimeout(() => {
+                input.value = '';
                 result.textContent = '';
                 result.className = 'result';
             }, 3000);
 
         };
     };   
+});
+
+socket.on('barcode-scanned', (barcode, status, message) => {
+    console.log(status, message);
+
+    if(message === 'sesi dan data berhasil diperbarui' || message === 'sesi berhasil diperbarui, data berhasil dibuat') {
+        result.textContent = `Barcode ${barcode} berhasil discan`;
+        result.className = 'result success';
+
+    } else if(status === 'fail' && message === 'input not valid, try again') {
+        result.textContent = `Barcode ${barcode} tidak valid`;
+        result.className = 'result fail';
+
+    } else if(status === 'fail' && message === 'nim mahasiswa tidak terdaftar, hubungi petugas') {
+        result.textContent = `Barcode ${barcode} tidak terdaftar, hubungi petugas`;
+        result.className = 'result fail';
+
+    };
+
+    setTimeout(() => {
+        result.textContent = '';
+        result.className = 'result';
+    }, 3000);
 });
