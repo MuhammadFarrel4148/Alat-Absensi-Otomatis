@@ -6,8 +6,41 @@
     <title>Admin Page</title>
     <link rel="icon" href="../assets/Logo_Universitas_Brawijaya.svg.png">
     <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Under Construction...</h1>
+    <nav class="navigation">
+        <div class="logo-header">
+            <img src="../assets/Logo_Universitas_Brawijaya.svg.png" alt="Logo-UB" class="logoub">
+            <h1>Universitas <span>Brawijaya</span></h1>
+        </div>
+        <div class="welcome">
+            <h1>Welcome To <span>Admin Page</span></h1>
+        </div>
+        <div class="profile">
+            <img src="../assets/no-profile-picture-15257.svg" alt="profile-admin">
+            <div class="admin-information">
+                <h1 class="name-admin">Muhammad Farrel</h1>
+                <h3 class="subtitle-admin">Admin</h3>
+            </div>
+        </div>
+    </nav>
+    <div class="container-content">
+        <div class="content-left">
+            <h1 class="title-content">Statistik <span>Pengunjung</span><br>Ruang Baca</h1>
+            <label for="date-picker" class="title-picker">Pilih Waktu: </label>
+            <input type="date" id="date-picker">
+        </div>
+        <div class="content-right">
+            <canvas id="chart" width="500" height="400"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

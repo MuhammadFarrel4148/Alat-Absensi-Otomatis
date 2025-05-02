@@ -188,6 +188,9 @@ const scanBarcode = async(request, response) => {
 };
 
 const statisticMahasiswa = async(request, response) => {
+    let pria = 0;
+    let wanita = 0;
+
     try {
         const { day, month, year } = request.query;
 
@@ -211,9 +214,23 @@ const statisticMahasiswa = async(request, response) => {
 
         const [getStatistic] = await db.query(sqlQuery, sqlParams);
 
+        for(const mahasiswa of getStatistic) {
+            const [humanGender] = await db.query('SELECT * FROM mahasiswa WHERE nim = ?', [mahasiswa.nim]);
+
+            if(humanGender[0].jenis_kelamin === 'Pria') {
+                pria++;
+
+            } else {
+                wanita++;
+
+            }
+        }
+
         return response.status(200).json({
             status: 'success',
-            result: getStatistic
+            total_pengunjung: getStatistic.length,
+            pengunjung_pria: pria,
+            pengunjung_wanita: wanita
         });
 
     } catch(error) {

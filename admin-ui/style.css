@@ -4,10 +4,127 @@
     box-sizing: border-box;
 }
 
-body {
-    font-size: 3rem;
-    display: grid;
-    place-items: center;
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100vh;
+    background-image: url(../assets/abstract-marble-texture-black-white-grey-background-handmade-technique.jpg);
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    z-index: -1;
 }
+
+.navigation {
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: #273F4F;
+}
+
+.logo-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.logo-header h1 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+}
+
+.logo-header h1 span {
+    color: #FE7743;
+}
+
+.logoub {
+    width: 50px;
+}
+
+.welcome h1 {
+    font-family: "Poppins", sans-serif;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.welcome h1 span {
+    color: #FE7743;
+}
+
+.profile {
+    display: flex;
+    gap: 1rem;
+}
+
+.profile img {
+    width: 50px;
+}
+
+.name-admin {
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.subtitle-admin {
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.container-content {
+    font-family: "Poppins", sans-serif;
+    background-color: white;
+    height: 75vh;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 1rem;
+    margin-left: 10rem;
+    border-radius: 50px;
+    padding: 2rem;
+    color: #273F4F;
+    gap: 2rem;
+}
+
+.content-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-left: 2rem;
+}
+
+.title-content {
+    font-weight: 700;
+    font-size: 40px;
+}
+
+.title-content span {
+    color: white;
+    background-color: #FE7743;
+    padding: 0.2rem 1rem;
+    border-radius: 50px;
+}
+
+.title-picker {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+#date-picker {
+    margin-top: -1.5rem;
+    padding: 10px;
+    margin-bottom: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#chart {
+    margin-left: 5rem;
+}
+
