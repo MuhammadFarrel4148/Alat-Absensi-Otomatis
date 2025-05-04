@@ -77,7 +77,14 @@ datePicker.addEventListener('change', async(event) => {
         }, 3000);
 
     } catch(error) {
-        
+        result.textContent = 'Gagal menghubungi server, coba lagi';
+        result.className = 'result fail';
+
+        setTimeout(() => {
+            result.textContent = '';
+            result.className = 'result';
+            
+        }, 3000);
     };
 });
 
