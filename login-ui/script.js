@@ -19,7 +19,6 @@ loginForm.addEventListener('submit', async(event) => {
         });
 
         const data = await response.json();
-        console.log(data);
 
         if(data.status === 'fail' && data.message === 'Input not valid, try again') {
             result.textContent = 'Input not valid, try again';
@@ -30,8 +29,8 @@ loginForm.addEventListener('submit', async(event) => {
             result.className = 'result fail';
 
         } else if(data.status === 'success' && data.message === 'berhasil login') {
-            window.location.href = 'http://127.0.0.1:3001/Alat-Absensi-Otomatis/admin-ui/admin.html'
-
+            localStorage.setItem('token', data.token);
+            window.location.href = '../admin-ui/admin.html'
         }
 
         emailInput.value = '';

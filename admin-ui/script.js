@@ -2,10 +2,48 @@ const ctx = document.getElementById('chart');
 const datePicker = document.getElementById('date-picker');
 const result = document.getElementById('result');
 const totalPengunjung = document.getElementById('total-pengunjung');
+const profileImg = document.getElementById('profile-img');
+const logoutMenu = document.getElementById('logout-menu');
+const logoutButton = document.getElementById('logout-button');
 
 let currentChart = null;
 
+profileImg.addEventListener('click', (event) => {
+    logoutMenu.classList.toggle('hidden');
+});
+
+document.addEventListener('click', (event) => {
+    if(!document.getElementById('profile-container').contains(event.target)) {
+        logoutMenu.classList.add('hidden');
+    };
+});
+
+logoutButton.addEventListener('click', async(event) => {
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('http://localhost:3000/logout', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
+
+        const data = await response.json();
+
+        if(data.status === 'success' && data.message === 'logout berhasil') {
+            localStorage.removeItem('token');
+            window.location.href = '../login-ui/login.html';
+        };
+        
+    } catch(error) {
+
+    };
+});
+
 datePicker.addEventListener('change', async(event) => {
+    const token = localStorage.getItem('token');
+
     const selectedDate = new Date(event.target.value);
 
     const day = selectedDate.getDate();
@@ -14,7 +52,10 @@ datePicker.addEventListener('change', async(event) => {
 
     try {
         const response = await fetch(`http://localhost:3000/statistic?day=${day}&month=${month}&year=${year}`, {
-            method: 'GET'
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
         });
 
         const data = await response.json();
@@ -28,47 +69,47 @@ datePicker.addEventListener('change', async(event) => {
             result.className = 'result success';
             totalPengunjung.textContent = `Total Pengunjung: ${data.total_pengunjung}`;
 
+            currentChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Laki-Laki', 'Perempuan'],
+                    datasets: [{
+                        label: 'Banyaknya Pengunjung',
+                        data: [data.pengunjung_pria, data.pengunjung_wanita],
+                        backgroundColor: ['#4A90E2','#FE7743'], 
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+    
+                        title: {
+                            display: true,
+                            text: 'Statistik Pengunjung',
+                            font: {
+                                size: 20,
+                                family: 'Poppins'
+                            },
+                            color: '#273F4F'
+                        }
+                    },
+    
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
         } else {
             result.textContent = 'Data statistik gagal diambil, coba lagi';
             result.className = 'result fail';
 
         };
-
-        currentChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Laki-Laki', 'Perempuan'],
-                datasets: [{
-                    label: 'Banyaknya Pengunjung',
-                    data: [data.pengunjung_pria, data.pengunjung_wanita],
-                    backgroundColor: ['#4A90E2','#FE7743'], 
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-
-                    title: {
-                        display: true,
-                        text: 'Statistik Pengunjung',
-                        font: {
-                            size: 20,
-                            family: 'Poppins'
-                        },
-                        color: '#273F4F'
-                    }
-                },
-
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
 
         setTimeout(() => {
             result.textContent = '';
@@ -83,7 +124,7 @@ datePicker.addEventListener('change', async(event) => {
         setTimeout(() => {
             result.textContent = '';
             result.className = 'result';
-            
+
         }, 3000);
     };
 });

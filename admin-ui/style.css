@@ -150,3 +150,33 @@ body::before {
     font-weight: 500;
 }
 
+.logout-menu {
+    position: absolute;
+    top:70px;
+    right: 230px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 10;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+}
+
+#logout-button {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    width: 100%;
+    color: #273F4F;
+}
+
+.logout-menu #logout-button:hover {
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.hidden {
+    display: none;
+}
+

@@ -8,6 +8,42 @@ const generateToken = (admin) => {
     return token;
 };
 
+const accessValidation = async(request, response, next) => {
+    const authorization = request.headers.authorization;
+
+    try {
+        if(!authorization) {
+            return response.status(401).json({
+                status: 'fail',
+                message: 'Unauthorized'
+            });
+        };
+
+        const token = authorization.split(' ')[1];
+        const [isBlacklist] = await db.query('SELECT * FROM blacklisttoken WHERE token = ?', [token]);
+
+        if(isBlacklist.length > 0) {
+            return response.status(401).json({
+                status: 'fail',
+                message: 'Unauthorized'
+            });
+        };
+
+        const checkValidation = jwt.verify(token, process.env.JWT_SECRET);
+
+        if(checkValidation) {
+            request.auth = { credentials: checkValidation };
+            return next();
+        };
+
+    } catch(error) {
+        return response.status(401).json({
+            status: 'fail',
+            message: `Invalid access validation: ${error}`
+        });
+    };
+};
+
 const loginAccount = async(request, response) => {
     const { email, password } = request.body;
 
@@ -241,4 +277,4 @@ const statisticMahasiswa = async(request, response) => {
     };
 };
 
-module.exports = { scanBarcode, statisticMahasiswa, loginAccount, logoutAccount };
+module.exports = { scanBarcode, statisticMahasiswa, loginAccount, logoutAccount, accessValidation };
