@@ -5,6 +5,7 @@ const totalPengunjung = document.getElementById('total-pengunjung');
 const profileImg = document.getElementById('profile-img');
 const logoutMenu = document.getElementById('logout-menu');
 const logoutButton = document.getElementById('logout-button');
+const nameAdmin = document.getElementById('name-admin');
 
 let currentChart = null;
 
@@ -21,23 +22,18 @@ document.addEventListener('click', (event) => {
 logoutButton.addEventListener('click', async(event) => {
     const token = localStorage.getItem('token');
 
-    try {
-        const response = await fetch('http://localhost:3000/logout', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        });
+    const response = await fetch('http://localhost:3000/logout', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        if(data.status === 'success' && data.message === 'logout berhasil') {
-            localStorage.removeItem('token');
-            window.location.href = '../login-ui/login.html';
-        };
-        
-    } catch(error) {
-
+    if(data.status === 'success' && data.message === 'logout berhasil') {
+        localStorage.removeItem('token');
+        window.location.href = '../login-ui/login.html';
     };
 });
 
@@ -129,3 +125,17 @@ datePicker.addEventListener('change', async(event) => {
     };
 });
 
+document.addEventListener('DOMContentLoaded', async(event) => {
+    const token = localStorage.getItem('token');
+
+    const response = await fetch('http://localhost:3000/profile', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    });
+
+    const data = await response.json();
+
+    nameAdmin.textContent = data.username;
+});

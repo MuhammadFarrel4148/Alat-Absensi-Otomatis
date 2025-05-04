@@ -30,8 +30,9 @@ input.addEventListener('input', async() => {
                 result.className = 'result fail';
             }
 
-            setTimeout(() => {
-                input.value = '';
+            input.value = '';
+
+            setTimeout(() => {                
                 result.textContent = '';
                 result.className = 'result';
             }, 3000);
@@ -40,19 +41,17 @@ input.addEventListener('input', async() => {
             result.textContent = 'Terjadi kesalahan dalam menghubungi server';
             result.className = 'result fail';
 
+            input.value = '';
+
             setTimeout(() => {
-                input.value = '';
                 result.textContent = '';
                 result.className = 'result';
             }, 3000);
-
         };
-    };   
+    };  
 });
 
 socket.on('barcode-scanned', (barcode, status, message) => {
-    console.log(status, message);
-
     if(message === 'sesi dan data berhasil diperbarui' || message === 'sesi berhasil diperbarui, data berhasil dibuat') {
         result.textContent = `Barcode ${barcode} berhasil discan`;
         result.className = 'result success';

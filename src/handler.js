@@ -4,7 +4,7 @@ const { nanoid } = require('nanoid');
 const jwt = require('jsonwebtoken');
 
 const generateToken = (admin) => {
-    const token = jwt.sign({ id: admin[0].id_admin, email: admin[0].email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: admin[0].id_admin, email: admin[0].email, username: admin[0].username }, process.env.JWT_SECRET, { expiresIn: '1h' });
     return token;
 };
 
@@ -277,4 +277,15 @@ const statisticMahasiswa = async(request, response) => {
     };
 };
 
-module.exports = { scanBarcode, statisticMahasiswa, loginAccount, logoutAccount, accessValidation };
+const getProfile = async(request, response) => {
+    const authorization = request.headers.authorization;
+
+    const token = authorization.split(' ')[1];
+    const checkValidation = jwt.verify(token, process.env.JWT_SECRET);
+
+    return response.status(200).json({
+        username: checkValidation.username
+    });
+};
+
+module.exports = { scanBarcode, statisticMahasiswa, loginAccount, logoutAccount, accessValidation, getProfile };
