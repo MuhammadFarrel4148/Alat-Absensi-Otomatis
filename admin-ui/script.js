@@ -1,5 +1,8 @@
 const ctx = document.getElementById('chart');
 const datePicker = document.getElementById('date-picker');
+const result = document.getElementById('result');
+const totalPengunjung = document.getElementById('total-pengunjung');
+
 let currentChart = null;
 
 datePicker.addEventListener('change', async(event) => {
@@ -15,8 +18,20 @@ datePicker.addEventListener('change', async(event) => {
         });
 
         const data = await response.json();
+
         if(currentChart) {
             currentChart.destroy();
+        };
+
+        if(data.status === 'success') {
+            result.textContent = 'Data statistik berhasil diambil';
+            result.className = 'result success';
+            totalPengunjung.textContent = `Total Pengunjung: ${data.total_pengunjung}`;
+
+        } else {
+            result.textContent = 'Data statistik gagal diambil, coba lagi';
+            result.className = 'result fail';
+
         };
 
         currentChart = new Chart(ctx, {
@@ -31,6 +46,22 @@ datePicker.addEventListener('change', async(event) => {
                 }]
             },
             options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+
+                    title: {
+                        display: true,
+                        text: 'Statistik Pengunjung',
+                        font: {
+                            size: 20,
+                            family: 'Poppins'
+                        },
+                        color: '#273F4F'
+                    }
+                },
+
                 scales: {
                     y: {
                         beginAtZero: true
@@ -39,8 +70,14 @@ datePicker.addEventListener('change', async(event) => {
             }
         });
 
-    } catch(error) {
+        setTimeout(() => {
+            result.textContent = '';
+            result.className = 'result';
 
+        }, 3000);
+
+    } catch(error) {
+        
     };
 });
 
